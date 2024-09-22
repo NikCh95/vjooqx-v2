@@ -1,7 +1,7 @@
 package com.github.smart24.transactions
 
-import rx.Completable
-import rx.Single
+import io.reactivex.Completable
+import io.reactivex.Single
 
 interface TransactionStep<T> : Execution<T> {
 

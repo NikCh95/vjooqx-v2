@@ -1,6 +1,6 @@
 package com.github.smart24.transactions
 
-import rx.Single
+import io.reactivex.Single
 
 interface Execution<E> {
 

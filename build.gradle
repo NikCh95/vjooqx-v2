@@ -10,11 +10,11 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.0'
 }
 
-group 'com.github.NikCh95'
-version '1.0.2'
+group 'com.github.smart24'
+version '1.0.4'
 sourceCompatibility = 11
 
 repositories {
@@ -28,7 +28,7 @@ dependencies {
     implementation("com.github.jitpack:gradle-simple:1.0.4")
 
     implementation("io.vertx:vertx-core:$vertx_version")
-    implementation("io.vertx:vertx-rx-java:$vertx_version")
+    implementation("io.vertx:vertx-rx-java2:$vertx_version")
     implementation("io.vertx:vertx-jdbc-client:$vertx_version")
     implementation('org.jooq:jooq:3.15.0')
 

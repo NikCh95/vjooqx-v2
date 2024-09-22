@@ -1,6 +1,6 @@
 package com.github.smart24
 
-import rx.Single
+import io.reactivex.Single
 
 interface MapperStep {
 

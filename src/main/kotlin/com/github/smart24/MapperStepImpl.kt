@@ -2,10 +2,10 @@ package com.github.smart24
 
 import com.github.smart24.exceptions.EmptyResultSet
 import com.github.smart24.json.JsonParser
+import io.reactivex.Single
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.sql.ResultSet
-import rx.Single
 
 class MapperStepImpl(
     private val jsonParser: JsonParser,

@@ -1,7 +1,7 @@
 package com.github.smart24.transactions
 
-import rx.Completable
-import rx.Single
+import io.reactivex.Completable
+import io.reactivex.Single
 
 class TransactionStepImpl<T>(
     private val result: Single<T>,
@@ -11,6 +11,7 @@ class TransactionStepImpl<T>(
     override fun commit(): Single<T> {
 
         return transactionContext.getConnection().rxCommit()
+            .toSingle { true }
             .flatMap { result }
             .doAfterTerminate { transactionContext.getConnection().close() }
     }
@@ -23,53 +24,41 @@ class TransactionStepImpl<T>(
     }
 
     override fun thenCommit(action: (T) -> T): Single<T> {
-        return result.flatMap { it ->
-            val resultAfterAction = action(it)
+
+        return result.flatMap {
+            action(it)
             transactionContext.getConnection()
                 .rxCommit()
-                .flatMap {
-                    transactionContext.getConnection().rxClose()
-                }
-                .flatMap {
-                    Single.just(resultAfterAction)
-                }
+                .andThen(transactionContext.getConnection().rxClose())
+                .andThen(Single.just(action(it)))
         }
     }
 
     override fun rollBackIf(action: (T) -> Boolean): Completable {
-        return result.flatMapCompletable { it ->
-            val connection = transactionContext.getConnection()
+
+        return result.flatMapCompletable {
             if (action(it)) {
-                connection.rxRollback()
-                    .flatMapCompletable {
-                        connection.rxClose().toCompletable()
-                    }
+                transactionContext.getConnection()
+                    .rxRollback().andThen(transactionContext.getConnection().rxClose())
             } else {
-                connection.rxCommit()
-                    .flatMapCompletable {
-                        connection.rxClose().toCompletable()
-                    }
+                transactionContext.getConnection().rxCommit().andThen(
+                    transactionContext.getConnection().rxClose()
+                )
             }
         }
     }
 
     override fun rollBackOnError(): Single<T> {
         return result.onErrorResumeNext { t ->
-            val connection = transactionContext.getConnection()
-            connection.rxRollback()
-                .flatMap {
-                    connection.rxClose()
-                }.flatMap {
-                    Single.error<T>(t)
-                }
-        }.flatMap { result ->
-            val connection = transactionContext.getConnection()
-            connection.rxCommit()
-                .flatMap {
-                    connection.rxClose()
-                }.flatMap {
-                    Single.just(result)
-                }
+            transactionContext.getConnection()
+                .rxRollback()
+                .andThen(transactionContext.getConnection().rxClose())
+                .andThen(Single.error<T>(t))
+        }.flatMap {
+            transactionContext.getConnection()
+                .rxCommit()
+                .andThen(transactionContext.getConnection().rxClose())
+                .andThen(Single.just(it))
         }
     }
 

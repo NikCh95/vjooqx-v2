@@ -1,8 +1,8 @@
 package com.github.smart24.transactions
 
 import com.github.smart24.MapperStepImpl
+import io.reactivex.Single
 import io.vertx.ext.sql.ResultSet
-import rx.Single
 
 class MapperStepTransactionImpl(
     private val resultSingle: Single<ResultSet>,

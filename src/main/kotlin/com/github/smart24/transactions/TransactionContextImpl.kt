@@ -2,12 +2,12 @@ package com.github.smart24.transactions
 
 import com.github.smart24.LoggingInterceptor
 import com.github.smart24.json.JsonParser
+import io.reactivex.Single
 import io.vertx.ext.sql.ResultSet
-import io.vertx.rxjava.ext.sql.SQLConnection
+import io.vertx.reactivex.ext.sql.SQLConnection
 import org.jooq.DSLContext
 import org.jooq.Query
 import org.jooq.conf.ParamType
-import rx.Single
 
 class TransactionContextImpl(
     private val connectionProvider: Single<SQLConnection>,
@@ -48,7 +48,7 @@ class TransactionContextImpl(
             connectionProvider.flatMap { connection ->
                 this.connection = connection
                 connection.rxSetAutoCommit(false)
-                    .flatMap { Single.just(true) }
+                    .toSingle { true }
                     .flatMap {
                         query(connection, query)
                     }
@@ -63,9 +63,7 @@ class TransactionContextImpl(
             connectionProvider.flatMap { connection ->
                 this.connection = connection
                 connection.rxSetAutoCommit(false)
-                    .flatMap {
-                        Single.just(true)
-                    }
+                    .toSingle { true }
                     .flatMap { update(connection, query) }
             }
         }

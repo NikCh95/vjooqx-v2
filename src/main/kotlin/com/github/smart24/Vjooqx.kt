@@ -3,12 +3,12 @@ package com.github.smart24
 import com.github.smart24.json.JsonParser
 import com.github.smart24.transactions.TransactionContext
 import com.github.smart24.transactions.TransactionContextImpl
-import io.vertx.rxjava.ext.jdbc.JDBCClient
-import io.vertx.rxjava.ext.sql.SQLConnection
+import io.reactivex.Single
+import io.vertx.reactivex.ext.jdbc.JDBCClient
+import io.vertx.reactivex.ext.sql.SQLConnection
 import org.jooq.DSLContext
 import org.jooq.Query
 import org.jooq.conf.ParamType
-import rx.Single
 
 class Vjooqx(
     private val delegate: JDBCClient,

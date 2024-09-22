@@ -1,7 +1,7 @@
 package com.github.smart24
 
 import com.github.smart24.json.JsonParserFactory
-import io.vertx.rxjava.ext.jdbc.JDBCClient
+import io.vertx.reactivex.ext.jdbc.JDBCClient
 import org.jooq.DSLContext
 
 interface Builder {

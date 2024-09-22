@@ -2,7 +2,7 @@ package com.github.smart24.transactions
 
 import com.github.smart24.LoggingInterceptor
 import com.github.smart24.json.JsonParser
-import io.vertx.rxjava.ext.sql.SQLConnection
+import io.vertx.reactivex.ext.sql.SQLConnection
 import org.jooq.DSLContext
 import org.jooq.Query
 
