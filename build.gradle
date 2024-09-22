@@ -1,0 +1,47 @@
+buildscript {
+    ext.vertx_version = '4.4.3'
+
+    repositories {
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
+}
+
+group 'com.github.NikCh95'
+version '1.0.2'
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.github.jitpack:gradle-simple:1.0.4")
+
+    implementation("io.vertx:vertx-core:$vertx_version")
+    implementation("io.vertx:vertx-rx-java:$vertx_version")
+    implementation("io.vertx:vertx-jdbc-client:$vertx_version")
+    implementation('org.jooq:jooq:3.15.0')
+
+    testImplementation(group: 'junit', name: 'junit', version: '4.13.2')
+    testImplementation('com.google.code.gson:gson:2.8.9')
+
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "11"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "11"
+}
+
+
